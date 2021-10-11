@@ -7,6 +7,26 @@
     <title>資金分配</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    
+    <style>
+    /* マウスホバー時に青色にする */
+    .btn-dark:hover {
+        color: #fff;
+        background-color: #1a8bd6;
+        border-color: #11e9e9;
+        }
+    
+    /* focus時に薄色にする */
+    input[type="number"]:focus {
+            /* border: 1px solid #ff9900; */
+            background-color: #7dc0a633;
+            outline: 0;
+        }
+
+    
+    </style>
+
 </head>
 
 <body>
@@ -31,7 +51,7 @@
         </div>
 
         <div class="row">
-            <div class="col-8 offset-2">
+            <div class="col-md-8  offset-2">
             <p>
                 <label>オッズ1</label>
                 <input type="number" style="width:100px;text-align:center;" step="0.1" min="0" name="odds1" v-model="odds1">
@@ -94,7 +114,7 @@
 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-            <button v-on:click="calc()">計算</button>
+            <button id="calcbutton" class="btn btn-dark" onclick="change_button_color()" v-on:click="calc()">計算</button>
 
             <br><br><br>
 
@@ -121,6 +141,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 
+    <!-- 計算ボタンを押した後に赤色に変更する -->
+    <script>
+            function change_button_color(){
+                const element = document.getElementById("calcbutton")
+                element.setAttribute('class', 'btn btn-danger')
+            }
+    </script>
+
+    
     <script>
         var app = new Vue({
             el: '#app',
