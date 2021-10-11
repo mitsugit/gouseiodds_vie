@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>資金分配</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="app" class="container">
+        <div class="row">
+            <div class="col-8 offset-2">
+
+                <div><h1 class="mt-5 mb-5">資金分配</h1></div>
+                
+
+
+
+                <div>
+                    <p>
+                        <label>予算</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="number" name="price"　style="width:100px;text-align:center;" step="100" min="0" v-model="price">
+                        &nbsp;&nbsp;円
+                    </p> 
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-8 offset-2">
+            <p>
+                <label>オッズ1</label>
+                <input type="number" style="width:100px;text-align:center;" step="0.1" min="0" name="odds1" v-model="odds1">
+                &nbsp;&nbsp;倍
+                &nbsp;&nbsp;
+                ベット:
+                &nbsp;&nbsp;
+                {{bet1}}
+                &nbsp;円
+                
+                
+                &nbsp;&nbsp;
+                利益:
+                &nbsp;&nbsp;
+                {{profit1}}
+                &nbsp;円
+                
+
+
+            </p>
+            <p>
+                <label>オッズ2</label>
+                <input type="number" style="width:100px;text-align:center;" step="0.1" min="0" name="odds2" v-model="odds2">
+                &nbsp;&nbsp;倍
+                &nbsp;&nbsp;
+                ベット:
+                &nbsp;&nbsp;
+                {{bet2}}
+                &nbsp;円
+
+                
+                &nbsp;&nbsp;
+                利益:
+                &nbsp;&nbsp;
+                {{profit2}}
+                &nbsp;円
+                
+
+            </p>
+
+            <p>
+                <label>オッズ3</label>
+                <input type="number" style="width:100px;text-align:center;" step="0.1" min="0" name="odds3" v-model="odds3">
+                &nbsp;&nbsp;倍
+                &nbsp;&nbsp;
+                ベット:
+                &nbsp;&nbsp;
+                {{bet3}}
+                &nbsp;円
+
+            
+                &nbsp;&nbsp;
+                利益:
+                &nbsp;&nbsp;
+                {{profit3}}
+                &nbsp;円
+            
+
+            </p>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            <button v-on:click="calc()">計算</button>
+
+            <br><br><br>
+
+            <p>
+                <label>合成オッズ</label>
+                {{gousei_odds}}倍
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>合計金額</label>
+                {{bet_total}}
+                円
+            </p>
+
+            </div>
+
+
+        
+        </div>
+
+
+
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                price: 0,
+                bet1:0,
+                bet2:0,
+                bet3:0,
+                odds1:0,
+                odds2:0,
+                odds3:0,
+                gousei_odds:0,
+                bet_total:0,
+                profit1:0,
+                profit2:0,
+                profit3:0
+
+            },
+            methods: {
+                calc: function(event) {
+                    change = this.price;
+
+                    A = this.odds1*100;
+
+                    B1 = A/this.odds1;
+                    B2 = A/this.odds2;
+                    B3 = A/this.odds3;
+
+                    C = B1+B2+B3;
+
+                    D = A/C;
+
+
+                    D = Math.floor(D*100)/100;
+
+                    this.gousei_odds = D;
+
+                    //配分比率（％）＝ 数値B ÷ 数値C × 100
+
+                    this.bet1 =  dist_ratio(B1,C,change);
+                    this.bet2 =  dist_ratio(B2,C,change);
+                    this.bet3 =  dist_ratio(B3,C,change);
+
+
+                    this.bet_total = this.bet1 + this.bet2 + this.bet3;
+
+                    this.profit1 = this.bet1*this.odds1 - change;
+                    this.profit2 = this.bet2*this.odds2 - change;
+                    this.profit3 = this.bet3*this.odds3 - change;
+                    
+
+                }
+            }
+        })
+    </script>
+
+<script>
+    function dist_ratio(B,C,change) {
+        bet = B / C * change;
+        return Math.round(bet/100)*100;
+    }
+    
+</script>
+
+
+
+</body>
+</html>
